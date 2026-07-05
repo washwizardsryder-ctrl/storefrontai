@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Storefront AI — Get found when Ladner asks AI</title>
+<meta name="description" content="When your neighbours ask ChatGPT or Google's AI who to call in Ladner & Delta, does it say your name? Storefront AI puts local businesses inside the answer. Free scan." />
+<link rel="canonical" href="https://storefront-ai.ca/" />
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Does AI recommend your business? Find out free." />
+<meta property="og:description" content="People now ask ChatGPT and Google's AI who to hire in Ladner & Delta. If AI doesn't know you exist, it names a competitor. We fix that." />
+<meta property="og:locale" content="en_CA" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23112A2C'/%3E%3Ccircle cx='16' cy='13' r='5' fill='none' stroke='%23F2A33C' stroke-width='2.5'/%3E%3Cpath d='M16 18v8' stroke='%23F2A33C' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#112A2C;--ink-soft:#1A3A3C;--mist:#EAF0ED;--paper:#F6F8F6;
+    --pin:#F2A33C;--pin-deep:#D98521;--river:#3E7C8C;--coral:#E2603F;
+    --ghost:#8FA09C;--line:rgba(255,255,255,.12);--line-dark:rgba(17,42,44,.12);
+    --text-on-ink:#E4ECE8;--radius:14px;--maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Hanken Grotesk",system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.04;letter-spacing:-.02em;margin:0}
+  a{color:inherit}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--river);font-weight:500}
+  .pin-btn{display:inline-flex;align-items:center;gap:.5em;background:var(--pin);color:var(--ink);font-weight:700;font-family:"Hanken Grotesk",sans-serif;border:none;border-radius:999px;padding:.85em 1.5em;font-size:1rem;cursor:pointer;text-decoration:none;transition:transform .15s ease, background .15s ease;box-shadow:0 6px 22px -8px rgba(242,163,60,.7)}
+  .pin-btn:hover{background:var(--pin-deep);transform:translateY(-2px)}
+  :focus-visible{outline:3px solid var(--pin);outline-offset:3px;border-radius:4px}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(17,42,44,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:.6em;color:var(--text-on-ink);font-family:"Bricolage Grotesque";font-weight:700;font-size:1.12rem;letter-spacing:-.02em;text-decoration:none}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--pin);box-shadow:0 0 0 4px rgba(242,163,60,.22)}
+  .nav-cta{font-size:.92rem;padding:.6em 1.15em}
+  @media(max-width:560px){.nav-cta .full{display:none}}
+
+  .hero{background:var(--ink);color:var(--text-on-ink);position:relative;overflow:hidden;padding:64px 0 78px}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 88% -10%, rgba(62,124,140,.32), transparent 60%),radial-gradient(80% 60% at 0% 110%, rgba(242,163,60,.10), transparent 60%);pointer-events:none}
+  .hero .wrap{position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:46px;align-items:center}
+  @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:34px}}
+  .hero h1{font-size:clamp(2.3rem,5.4vw,3.5rem);font-weight:800;margin:.5em 0 .45em}
+  .hero h1 .hl{color:var(--pin)}
+  .hero p.lede{font-size:1.12rem;color:#C5D2CE;max-width:30em;margin:0 0 1.7em}
+  .hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .hero-actions .ghosted{font-size:.92rem;color:var(--ghost)}
+
+  .demo{background:linear-gradient(180deg,#16383A,#102B2D);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);overflow:hidden}
+  .demo-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font-family:"JetBrains Mono";font-size:.72rem;color:var(--ghost)}
+  .demo-bar .led{width:9px;height:9px;border-radius:50%;background:var(--river);opacity:.55}
+  .demo-bar .led.a{background:var(--coral)}.demo-bar .led.b{background:var(--pin)}
+  .demo-bar span{margin-left:auto;letter-spacing:.05em}
+  .demo-body{padding:18px 18px 20px}
+  .prompt{display:flex;align-items:center;gap:10px;background:#0C2224;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:"JetBrains Mono";font-size:.84rem;color:#DDE7E3}
+  .prompt .q{color:var(--ghost)}.prompt .typed{color:#fff}
+  .prompt .caret{width:8px;height:1.05em;background:var(--pin);display:inline-block;margin-left:2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .answer{margin-top:16px;min-height:150px}
+  .answer .who{font-family:"JetBrains Mono";font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--river);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .answer .who .spark{width:14px;height:14px}
+  .answer .txt{font-size:.98rem;color:#E4ECE8;white-space:pre-wrap;min-height:3em}
+  .answer .rec{display:flex;align-items:flex-start;gap:9px;margin:9px 0;opacity:0;transform:translateY(4px);transition:opacity .35s ease,transform .35s ease}
+  .answer .rec.show{opacity:1;transform:none}
+  .answer .rec .num{font-family:"JetBrains Mono";font-size:.8rem;color:var(--river);flex:0 0 auto;margin-top:1px}
+  .answer .rec b{font-weight:600;color:#fff}
+  .answer .rec small{display:block;color:var(--ghost);font-size:.82rem}
+  .missing{margin-top:14px;display:flex;align-items:center;gap:11px;background:rgba(226,96,63,.12);border:1px solid rgba(226,96,63,.4);border-radius:10px;padding:12px 14px}
+  .missing.show{opacity:1}
+  .missing .x{flex:0 0 auto;color:var(--coral)}
+  .missing .m-txt{font-size:.92rem}.missing .m-txt b{color:var(--coral)}
+  .trades{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .trade-chip{font-family:"JetBrains Mono";font-size:.74rem;background:transparent;color:#C5D2CE;border:1px solid var(--line);border-radius:999px;padding:.5em .9em;cursor:pointer;transition:all .15s ease}
+  .trade-chip:hover{border-color:var(--pin);color:#fff}
+  .trade-chip.active{background:var(--pin);color:var(--ink);border-color:var(--pin);font-weight:700}
+  .demo-note{font-size:.74rem;color:var(--ghost);margin-top:13px;line-height:1.4}
+  .scan-form{margin-top:14px;display:flex;flex-direction:column;gap:9px}
+  .scan-form input{width:100%;background:#0C2224;border:1px solid var(--line);border-radius:9px;padding:.7em .8em;font-size:.92rem;color:#fff;font-family:"Hanken Grotesk",sans-serif}
+  .scan-form input::placeholder{color:#6f827e}
+  .scan-form input:focus{outline:none;border-color:var(--pin)}
+  .scan-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media(max-width:420px){.scan-row{grid-template-columns:1fr}}
+  .scan-go[disabled]{opacity:.6;cursor:progress}
+  .scan-cta{display:inline-block;margin-top:14px;background:var(--pin);color:var(--ink);font-weight:700;text-decoration:none;border-radius:999px;padding:.7em 1.2em;font-size:.92rem}
+  .scan-cta:hover{background:var(--pin-deep)}
+  .ans-head{font-weight:700;color:#fff;margin-bottom:6px}
+
+  .band{background:var(--ink-soft);color:var(--text-on-ink);padding:30px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:720px){.stats{grid-template-columns:1fr;gap:20px}}
+  .stat .big{font-family:"Bricolage Grotesque";font-weight:800;font-size:2.1rem;color:var(--pin);letter-spacing:-.02em}
+  .stat p{margin:.2em 0 0;font-size:.92rem;color:#C5D2CE;max-width:24em}
+  .stat .src{font-family:"JetBrains Mono";font-size:.66rem;color:var(--ghost);letter-spacing:.04em;margin-top:.5em}
+
+  .sec{padding:74px 0}
+  .sec-head{max-width:36em;margin-bottom:40px}
+  .sec-head h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin:.35em 0 .4em}
+  .sec-head p{font-size:1.08rem;color:#41595A;margin:0}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{background:#fff;border:1px solid var(--line-dark);border-radius:var(--radius);padding:26px 22px}
+  .step .step-n{font-family:"JetBrains Mono";font-size:.78rem;color:var(--pin-deep);font-weight:700;letter-spacing:.1em}
+  .step h3{font-size:1.25rem;font-weight:700;margin:.55em 0 .4em}
+  .step p{margin:0;font-size:.96rem;color:#41595A}
+  .step .tag{display:inline-block;margin-top:14px;font-family:"JetBrains Mono";font-size:.7rem;letter-spacing:.06em;color:var(--river);background:rgba(62,124,140,.1);padding:.35em .7em;border-radius:6px}
+
+  .price-wrap{background:var(--mist)}
+  .free-strip{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--ink);color:var(--text-on-ink);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;font-size:.96rem}
+  .free-strip b{color:#fff}
+  .free-tag{display:inline-block;background:var(--pin);color:var(--ink);font-family:"JetBrains Mono";font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.3em .7em;border-radius:999px;margin-right:6px}
+  .free-link{flex:0 0 auto;color:var(--pin);font-weight:700;text-decoration:none;white-space:nowrap}
+  .free-link:hover{text-decoration:underline}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+  @media(max-width:820px){.tiers{grid-template-columns:1fr}}
+  .tier{background:#fff;border:1px solid var(--line-dark);border-radius:var(--radius);padding:28px 24px;display:flex;flex-direction:column}
+  .tier.feat{border:2px solid var(--pin);box-shadow:0 22px 44px -24px rgba(242,163,60,.55);position:relative}
+  .tier.feat::before{content:"Most book this";position:absolute;top:-12px;left:24px;background:var(--pin);color:var(--ink);font-family:"JetBrains Mono";font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.35em .8em;border-radius:999px}
+  .tier .t-name{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.3rem}
+  .tier .t-sub{font-size:.9rem;color:var(--river);margin:.2em 0 1em}
+  .tier .t-price{font-family:"Bricolage Grotesque";font-weight:800;font-size:2.1rem;letter-spacing:-.02em}
+  .tier .t-price small{font-size:.95rem;font-weight:500;color:#6a8080;font-family:"Hanken Grotesk"}
+  .tier ul{list-style:none;padding:0;margin:18px 0 22px;flex:1}
+  .tier li{display:flex;gap:9px;align-items:flex-start;font-size:.94rem;padding:6px 0;color:#324748}
+  .tier li svg{flex:0 0 auto;margin-top:3px;color:var(--river)}
+  .tier .t-cta{margin-top:auto}.tier .t-cta a{width:100%;justify-content:center}
+  .tier.ghost-cta a{background:transparent;color:var(--ink);border:1.5px solid var(--ink);box-shadow:none}
+  .tier.ghost-cta a:hover{background:var(--ink);color:#fff}
+
+  .addons{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:720px){.addons{grid-template-columns:1fr}}
+  .addon{background:#fff;border:1px solid var(--line-dark);border-radius:var(--radius);padding:26px 24px;display:flex;gap:18px;align-items:flex-start}
+  .addon .ic{flex:0 0 auto;width:46px;height:46px;border-radius:11px;background:rgba(62,124,140,.12);display:flex;align-items:center;justify-content:center;color:var(--river)}
+  .addon h3{font-size:1.15rem;font-weight:700;margin:0 0 .3em}
+  .addon p{margin:0;font-size:.94rem;color:#41595A}
+  .addon .px{font-family:"JetBrains Mono";font-size:.74rem;color:var(--pin-deep);margin-top:.7em;font-weight:500}
+
+  .about{background:var(--ink);color:var(--text-on-ink)}
+  .about-grid{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
+  @media(max-width:680px){.about-grid{grid-template-columns:1fr;gap:20px}}
+  .avatar{width:96px;height:96px;border-radius:20px;background:linear-gradient(140deg,var(--pin),var(--pin-deep));display:flex;align-items:center;justify-content:center;font-family:"Bricolage Grotesque";font-weight:800;font-size:2.2rem;color:var(--ink)}
+  .about h2{font-size:1.7rem;font-weight:700;margin:0 0 .5em;color:#fff}
+  .about p{margin:0 0 .8em;color:#C5D2CE;max-width:46em}
+  .creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .cred{font-family:"JetBrains Mono";font-size:.72rem;border:1px solid var(--line);border-radius:999px;padding:.4em .85em;color:#C5D2CE}
+  .cred b{color:var(--pin);font-weight:500}
+
+  /* FORM */
+  .book{background:var(--pin);color:var(--ink);padding:72px 0}
+  .book-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+  @media(max-width:760px){.book-grid{grid-template-columns:1fr;gap:28px}}
+  .book h2{font-size:clamp(2rem,4.5vw,2.8rem);font-weight:800;margin:.2em 0 .4em;max-width:12em}
+  .book p.bsub{font-size:1.08rem;color:#5a3d12;margin:0 0 1.2em;max-width:26em}
+  .book .points{list-style:none;padding:0;margin:0;font-size:.96rem}
+  .book .points li{display:flex;gap:9px;align-items:flex-start;padding:5px 0;color:#3d2a0c}
+  form.intake{background:#fff;border-radius:18px;padding:26px 24px;box-shadow:0 26px 50px -24px rgba(17,42,44,.5)}
+  form.intake label{display:block;font-size:.82rem;font-weight:600;color:var(--ink);margin:12px 0 5px}
+  form.intake input,form.intake select{width:100%;border:1.5px solid #d6ded9;border-radius:9px;padding:.7em .8em;font-size:1rem;font-family:inherit;color:var(--ink);background:#fff}
+  form.intake input:focus,form.intake select:focus{outline:none;border-color:var(--pin)}
+  form.intake .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:460px){form.intake .row{grid-template-columns:1fr}}
+  form.intake button{margin-top:18px;width:100%;justify-content:center}
+  form.intake .hp{position:absolute;left:-9999px}
+  .form-fine{font-size:.76rem;color:#789;margin-top:12px;text-align:center}
+
+  footer{background:var(--ink);color:var(--ghost);padding:34px 0;border-top:1px solid var(--line)}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:.85rem}
+  .foot-in a{text-decoration:none;color:#C5D2CE}
+
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><span class="dot"></span>Storefront AI</a>
+    <a class="pin-btn nav-cta" href="#book">Book a free scan<span class="full"> →</span></a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">For Ladner &amp; Delta businesses</span>
+        <h1>Your neighbours now ask <span class="hl">AI</span> who to call. Does it say your name?</h1>
+        <p class="lede">People type "best plumber in Ladner" into ChatGPT and Google's AI instead of scrolling listings. If the AI doesn't know you exist, it recommends someone else — quietly, every day.</p>
+        <div class="hero-actions">
+          <a class="pin-btn" href="#book">See where you rank — free
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="ghosted">No cost. No commitment. Takes 5 minutes.</span>
+        </div>
+      </div>
+
+      <div class="demo" id="demo" aria-label="Free instant AI visibility scan">
+        <div class="demo-bar"><span class="led a"></span><span class="led b"></span><span class="led"></span>Free instant scan <span id="demo-status">try it →</span></div>
+        <div class="demo-body">
+          <div class="prompt"><span class="q">&gt;</span><span><span class="q">best </span><span class="typed" id="typed-trade">your business</span><span class="q"> in </span><span class="typed" id="typed-city">Ladner, BC</span><span class="caret"></span></span></div>
+
+          <!-- live scan inputs -->
+          <div class="scan-form" id="scan-form">
+            <input id="in-business" type="text" placeholder="Your business name" autocomplete="off" />
+            <div class="scan-row">
+              <input id="in-trade" type="text" placeholder="What you do (e.g. plumber)" autocomplete="off" />
+              <input id="in-city" type="text" value="Ladner, BC" autocomplete="off" />
+            </div>
+            <div class="trades" role="group" aria-label="Quick fill">
+              <button class="trade-chip" data-trade="window cleaner">Window cleaning</button>
+              <button class="trade-chip" data-trade="coffee shop">Café</button>
+              <button class="trade-chip" data-trade="plumber">Plumbing</button>
+              <button class="trade-chip" data-trade="florist">Florist</button>
+              <button class="trade-chip" data-trade="restaurant">Restaurant</button>
+            </div>
+            <button class="pin-btn scan-go" id="scan-go" type="button" style="width:100%;justify-content:center;margin-top:4px">
+              Scan my business — free
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 4a7 7 0 105.2 11.7l4 4 1.5-1.4-4-4A7 7 0 0011 4zm0 2a5 5 0 110 10 5 5 0 010-10z" fill="currentColor"/></svg>
+            </button>
+          </div>
+
+          <!-- result area -->
+          <div class="answer" id="answer" hidden>
+            <div class="who" id="ans-who"><svg class="spark" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.6 4.8L18 9.4l-4.4 1.6L12 16l-1.6-5L6 9.4l4.4-1.6L12 3z" fill="currentColor"/></svg><span id="ans-who-txt">Scanning live…</span></div>
+            <div class="txt" id="ans-txt"></div>
+            <div id="recs"></div>
+            <div class="missing" id="missing" hidden>
+              <svg class="x" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div class="m-txt" id="missing-txt"></div>
+            </div>
+            <a class="scan-cta" id="scan-cta" href="#book" hidden>Get the full report &amp; fix plan →</a>
+          </div>
+
+          <p class="demo-note">One free question, scanned live across the web. The full Report Card checks every question your customers ask, on ChatGPT, Gemini &amp; Google's AI.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap stats">
+    <div class="stat"><div class="big">25%</div><p>of search traffic is projected to move from Google to AI assistants by 2026.</p><div class="src">— Gartner</div></div>
+    <div class="stat"><div class="big">42%</div><p>of buyers already use AI search when deciding who to hire or buy from.</p><div class="src">— HubSpot, 2026</div></div>
+    <div class="stat"><div class="big">2–6 wks</div><p>is how fast a business can start showing up in AI answers once it's fixed.</p><div class="src">— typical first citations</div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">How it works</span><h2>Three steps to being the business AI recommends</h2><p>No bots, no software to learn, nothing bolted onto your phone. I fix how the web describes you so AI trusts you and names you first.</p></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">STEP 01</div><h3>Scan</h3><p>I ask the AI assistants what your customers ask — and capture exactly who gets named in your category, and whether you're in it.</p><span class="tag">You get a Report Card</span></div>
+      <div class="step"><div class="step-n">STEP 02</div><h3>Fix</h3><p>Tidy your Google profile, add the structured info and plain-answer content AI reads, and make your name, services and area consistent everywhere.</p><span class="tag">One-time setup</span></div>
+      <div class="step"><div class="step-n">STEP 03</div><h3>Stay found</h3><p>AI rewards freshness, so I re-scan monthly, watch your competitors, and keep your details current as the assistants change.</p><span class="tag">Optional monthly</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec price-wrap">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Plain pricing</span><h2>Start free. Pay only when you want more.</h2><p>The instant scan up top is free and always will be. Here's what unlocks the full picture and the fix.</p></div>
+    <div class="free-strip">
+      <div><span class="free-tag">Free</span> <b>Instant scan</b> — one question, scanned live: are you named, and who AI picks instead.</div>
+      <a class="free-link" href="#top">Run it ↑</a>
+    </div>
+    <div class="tiers">
+      <div class="tier ghost-cta">
+        <div class="t-name">Report Card</div><div class="t-sub">The full picture + your fix plan</div><div class="t-price">$199<small> one-time</small></div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Every question customers ask — not just one</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Across ChatGPT, Gemini &amp; Google AI</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Your prioritized, business-specific fix plan</li>
+        </ul>
+        <div class="t-cta"><a class="pin-btn" href="#book">Get my report card</a></div>
+      </div>
+      <div class="tier feat">
+        <div class="t-name">Get-Found Setup</div><div class="t-sub">The full fix, done for you</div><div class="t-price">$700<small> one-time</small></div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in the Report Card</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Google profile + website info AI can read</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Answer-style content for your top services</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Consistent name, area &amp; services everywhere</li>
+        </ul>
+        <div class="t-cta"><a class="pin-btn" href="#book">Book the setup</a></div>
+      </div>
+      <div class="tier ghost-cta">
+        <div class="t-name">Stay-Found</div><div class="t-sub">Keep the lead you built</div><div class="t-price">$99<small> / month</small></div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly re-scan &amp; visibility report</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Fresh content so AI keeps trusting you</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Competitor watch + cancel anytime</li>
+        </ul>
+        <div class="t-cta"><a class="pin-btn" href="#book">Stay found</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Also available</span><h2>Two more ways to win the trust AI looks for</h2><p>Reviews and fresh photos are exactly the signals AI uses to decide who to recommend. Add either to any plan.</p></div>
+    <div class="addons">
+      <div class="addon">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.7 5.5 6 .9-4.3 4.2 1 6L12 17l-5.4 2.8 1-6L3.3 9.4l6-.9L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h3>Review Rescue</h3><p>Every Google review gets a warm, on-brand reply within minutes — plus a monthly summary of what customers keep praising and complaining about.</p><div class="px">from $79 / month</div></div>
+      </div>
+      <div class="addon">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12.5" r="3.2" stroke="currentColor" stroke-width="1.8"/><path d="M8 6l1.3-2h5.4L16 6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div><h3>Photo-to-Marketing</h3><p>Text me phone photos of your work or storefront. I turn them into a month of polished social posts, flyers and listing images — you approve, I post.</p><div class="px">from $149 / month</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec about">
+  <div class="wrap about-grid">
+    <div class="avatar" aria-hidden="true">R</div>
+    <div>
+      <span class="eyebrow">Who you're working with</span>
+      <h2>Run by Ryder — local, and on your side</h2>
+      <p>I run Wash Wizards here in Delta and sit on the Ladner Business Association board, so I know this town's businesses by name. I use the exact same AI-visibility work on my own company first — I'll show you the results.</p>
+      <p>No agency runaround, no jargon. Just a local who'll show you what AI says about you and fix it.</p>
+      <div class="creds"><span class="cred"><b>◆</b> Wash Wizards owner</span><span class="cred"><b>◆</b> LBA board member</span><span class="cred"><b>◆</b> Based in Ladner, BC</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM (Netlify Forms — works on deploy, no backend) -->
+<section class="book" id="book">
+  <div class="wrap book-grid">
+    <div>
+      <span class="eyebrow" style="color:#7a5414">Free, no commitment</span>
+      <h2>See what AI says about your business</h2>
+      <p class="bsub">Tell me your business and I'll run a live scan — exactly where you stand versus your competitors. Results back within 48 hours.</p>
+      <ul class="points">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>A real scan of ChatGPT, Gemini &amp; Google's AI</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Who AI recommends instead of you</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>No pressure — keep the report either way</li>
+      </ul>
+    </div>
+
+    <form class="intake" name="free-scan" method="POST" data-netlify="true" netlify-honeypot="company-website" action="/success.html">
+      <input type="hidden" name="form-name" value="free-scan" />
+      <p class="hp"><label>Don't fill this out: <input name="company-website" /></label></p>
+
+      <label for="biz">Business name</label>
+      <input id="biz" type="text" name="business-name" required placeholder="e.g. Ladner Coffee Co." />
+
+      <div class="row">
+        <div>
+          <label for="type">Type of business</label>
+          <input id="type" type="text" name="business-type" required placeholder="e.g. café, plumber" />
+        </div>
+        <div>
+          <label for="city">City / area</label>
+          <input id="city" type="text" name="city" required placeholder="Ladner, Delta…" value="Ladner, BC" />
+        </div>
+      </div>
+
+      <label for="site">Website (if you have one)</label>
+      <input id="site" type="text" name="website" placeholder="yoursite.ca — optional" />
+
+      <div class="row">
+        <div>
+          <label for="name">Your name</label>
+          <input id="name" type="text" name="contact-name" required placeholder="First name" />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" required placeholder="you@email.com" />
+        </div>
+      </div>
+
+      <button class="pin-btn" type="submit">Run my free scan
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p class="form-fine">Or email <a href="mailto:hello@washwiz.ca">hello@washwiz.ca</a>. No spam, ever.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>Storefront AI · Ladner &amp; Delta, BC</span>
+    <a href="mailto:hello@washwiz.ca">hello@washwiz.ca</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var bIn=$('in-business'),tIn=$('in-trade'),cIn=$('in-city');
+  var tTrade=$('typed-trade'),tCity=$('typed-city'),status=$('demo-status');
+  var answer=$('answer'),ansTxt=$('ans-txt'),recs=$('recs'),missing=$('missing'),missTxt=$('missing-txt');
+  var whoTxt=$('ans-who-txt'),cta=$('scan-cta'),go=$('scan-go'),form=$('scan-form');
+
+  // sample answers used ONLY as an offline fallback (e.g. opened as a local file)
+  var sample={
+    "window cleaner":["Fraserside Window Co.","Delta Streak-Free Cleaning","Riverside Glass & Pane"],
+    "coffee shop":["The Estuary Roastery","Marina Bean Café","Corner & Co. Coffee"],
+    "plumber":["Delta Drain & Pipe","Fraserside Plumbing Ltd.","Tidewater Mechanical"],
+    "florist":["Petal & Pier Florals","Delta Bloom Studio","Riverbank Flowers"],
+    "restaurant":["The Landing Bistro","Harbourside Grill","Village Table"],
+    "default":["Delta Local Co.","Fraserside Services","Riverside & Co."]
+  };
+
+  function syncPrompt(){
+    tTrade.textContent=(tIn.value.trim()||'your business');
+    tCity.textContent=(cIn.value.trim()||'your area');
+  }
+  tIn.addEventListener('input',syncPrompt); cIn.addEventListener('input',syncPrompt);
+
+  document.querySelectorAll('.trade-chip').forEach(function(c){
+    c.addEventListener('click',function(){tIn.value=c.getAttribute('data-trade');syncPrompt();tIn.focus();});
+  });
+
+  function showResult(data,isFallback){
+    form.hidden=true; answer.hidden=false; recs.innerHTML=''; missing.hidden=true; cta.hidden=true;
+    var comps=(data.competitors||[]);
+    if(data.named){
+      whoTxt.textContent='AI named you';
+      ansTxt.innerHTML='<span class="ans-head">Good news — AI mentions '+esc(data.business)+(data.position?(' (around #'+data.position+')'):'')+'.</span>You\u2019re on the radar, but position and consistency still decide who wins the click.';
+    }else{
+      whoTxt.textContent='AI answered';
+      ansTxt.innerHTML='<span class="ans-head">For "best '+esc(data.trade)+' in '+esc(data.city)+'", AI pointed to:</span>';
+    }
+    comps.forEach(function(name,i){
+      var d=document.createElement('div');d.className='rec show';
+      d.innerHTML='<span class="num">'+(i+1)+'</span><span><b>'+esc(name)+'</b></span>';
+      recs.appendChild(d);
+    });
+    if(!data.named){
+      missing.hidden=false;
+      missTxt.innerHTML='<b>'+esc(data.business)+'? Not mentioned.</b> AI sent these customers to '+(comps.length||'other')+' competitor'+(comps.length===1?'':'s')+' instead.';
+    }
+    cta.hidden=false;
+    status.textContent=isFallback?'demo (offline)':'done';
+  }
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  function fallback(business,trade,city){
+    var key=(trade||'').toLowerCase();
+    var comps=sample[key]||sample.default;
+    showResult({business:business,trade:trade||'business',city:city,named:false,competitors:comps},true);
+  }
+
+  go.addEventListener('click',function(){
+    var business=bIn.value.trim(),trade=tIn.value.trim(),city=cIn.value.trim()||'Ladner, BC';
+    if(!business){bIn.focus();bIn.style.borderColor='#E2603F';return;}
+    if(!trade){tIn.focus();tIn.style.borderColor='#E2603F';return;}
+    go.disabled=true; go.textContent='Scanning the web…'; status.textContent='scanning…';
+
+    fetch('/api/scan',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({business:business,trade:trade,city:city})})
+      .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+      .then(function(res){
+        if(!res.ok){ // rate-limited or error → friendly message
+          form.hidden=false; status.textContent='try again';
+          alert(res.d && res.d.error ? res.d.error : 'Scan unavailable right now — please try again.');
+          return;
+        }
+        // optional: capture as a lead in the background (non-blocking)
+        captureLead(business,trade,city);
+        showResult(res.d,false);
+      })
+      .catch(function(){ fallback(business,trade,city); })  // function not deployed / offline
+      .finally(function(){ go.disabled=false; go.innerHTML='Scan again — free'; });
+  });
+
+  // fire-and-forget lead capture into Netlify Forms (so you see who scanned)
+  function captureLead(business,trade,city){
+    try{
+      var enc=function(o){return Object.keys(o).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(o[k]);}).join('&');};
+      fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:enc({'form-name':'scan-lead','business-name':business,'business-type':trade,'city':city})}).catch(function(){});
+    }catch(e){}
+  }
+
+  syncPrompt();
+})();
+</script>
+
+<!-- hidden static form so Netlify registers the scan-lead capture -->
+<form name="scan-lead" data-netlify="true" hidden>
+  <input type="text" name="business-name" /><input type="text" name="business-type" /><input type="text" name="city" />
+</form>
+</body>
+</html>

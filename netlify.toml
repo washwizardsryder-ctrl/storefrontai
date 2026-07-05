@@ -1,0 +1,15 @@
+# Storefront AI — Netlify config
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Pretty endpoint for the free scan
+[[redirects]]
+  from = "/api/scan"
+  to = "/.netlify/functions/scan"
+  status = 200
+
+# SPA-style fallback is NOT needed (static multipage), so no catch-all.
